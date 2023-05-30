@@ -1,5 +1,5 @@
 import logging
-from handlers import start_command, help_command, echo
+from handlers import start_command, help_command, echo, photo
 from telegram.ext import Application, CommandHandler, MessageHandler, filters
 import os
 from dotenv import load_dotenv
@@ -18,8 +18,9 @@ logger = logging.getLogger(__name__)
 def main() -> None:
     application = Application.builder().token(os.getenv("TOKEN")).build()
     application.add_handler(CommandHandler("start", start_command))
-    application.add_handler(CommandHandler("help", help_command))
+    application.add_handler(CommandHandler("help", help_command)) 
     application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, echo))
+    application.add_handler(MessageHandler(filters.PHOTO, photo))
     application.run_polling()
 
 
