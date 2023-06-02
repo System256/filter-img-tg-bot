@@ -2,6 +2,7 @@ from emoji import emojize
 from telegram import ReplyKeyboardMarkup, KeyboardButton
 import os
 from glob import glob
+from PIL import Image, ImageFilter
 
 
 def get_smile():
@@ -13,12 +14,15 @@ def main_keyboard():
     return ReplyKeyboardMarkup([['Возможности', 'Отправить изображение']])
 
 
-def precessing_image():
-    os.makedirs('downloads/after_processing', exist_ok=True)
-
-    file_list = glob('downloads/before_processing/*_orig.****')
-    print(file_list)
+def processing_image():
+    os.makedirs('downloads\\after_processing', exist_ok=True)
+    before_img_list = glob('downloads\\before_processing\*_orig.****')
+    file_img = Image.open(before_img_list[0])
+    file_extension = before_img_list[0].split('.')[-1]
+    blurred_img = file_img.filter(ImageFilter.BLUR)
+    blurred_img.save(f'downloads\\after_processing\\new_file.{file_extension}') 
+    print(file_extension)
 
 
 if __name__ == "__main__":
-    precessing_image()
+    processing_image()
